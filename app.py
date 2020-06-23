@@ -18,7 +18,7 @@ def index():
 @app.route('/upload', methods = ['POST'])
 def upload():
 	file = request.files['inputFile']
-	text = request.form['description']
+	text = request.form.get['description']
 	cur = mysql.connection.cursor()
 	cur.execute("INSERT INTO upload(title, file) VALUES(%s, %s)", (text, file.read()))
 	mysql.connection.commit()
