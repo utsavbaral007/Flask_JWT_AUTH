@@ -6,8 +6,9 @@
 		<title>File Upload</title>
 	</head>
 	<body>
-		<form method="POST" action="/upload" enctype="multipart/form-data">
+		<form style="display: flex; flex-direction: column; width: 20%;" method="POST" action="/upload" enctype="multipart/form-data">
 			<input type="file" name="inputFile" />
+			<textarea placeholder="" name = 'description' rows = '4' col = '1' placeholder="description..."></textarea>
 			<button type="submit">Submit</button>
 		</form>
 	</body>
