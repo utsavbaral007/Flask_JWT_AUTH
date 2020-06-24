@@ -1,15 +1,27 @@
 from flask import Flask, render_template, request
-from flask_mysqldb import MySQL
+from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 
 app = Flask(__name__)
 
-mysql = MySQL()
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://Utsav:2828@localhost/upload'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-app.config['MYSQL_USER'] = 'Utsav'
-app.config['MYSQL_PASSWORD'] = '2828'
-app.config['MYSQL_DB'] = 'file_upload'
-app.config['MYSQL_HOST'] = 'localhost'
-mysql.init_app(app)
+db = SQLAlchemy(app)
+ma = Marshmallow(app)
+
+class upload_file(db.Model):
+	id = db.Column(db.Integer, primary_key = True)
+	description = db.Column(db.String(200), unique = True)
+	file = db.Column(db.LargeBinary(length = 4294967295))
+
+	def __init__(self, description, file):
+		self.description = description
+		self.file = file
+
+class upload_schema(ma.SQLAlchemyAutoSchema):
+	class Meta:
+		model = upload_file
 
 @app.route('/')
 def index():
@@ -17,12 +29,12 @@ def index():
 
 @app.route('/upload', methods = ['POST'])
 def upload():
+	description = request.form.get('description')
 	file = request.files['inputFile']
-	text = request.form.get('description')
-	cur = mysql.connection.cursor()
-	cur.execute("INSERT INTO upload(title, file) VALUES(%s, %s)", (text, file.read()))
-	mysql.connection.commit()
-	return "saved " +file.filename+ " to database"
+	new_file = upload_file(description = description, file= file.read())
+	db.session.add(new_file)
+	db.session.commit()
+	return 'file ' +file.filename+ ' uploaded successfully'
 
 if __name__ == '__main__':
 	app.run(debug=True)
