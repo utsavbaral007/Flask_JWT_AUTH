@@ -16,9 +16,9 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 class upload_file(db.Model):
-	id = db.Column(db.Integer, primary_key = True)
-	description = db.Column(db.String(200), unique = True)
-	file = db.Column(db.LargeBinary(length = 4294967295))
+	id = db.Column(db.Integer, primary_key = True, nullable = False)
+	description = db.Column(db.String(200), unique = True, nullable = False)
+	file = db.Column(db.LargeBinary(length = 4294967295), nullable = False)
 	def __init__(self, description, file):
 		self.description = description
 		self.file = file
