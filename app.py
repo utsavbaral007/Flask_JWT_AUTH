@@ -1,8 +1,13 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+import sqlalchemy
 
 app = Flask(__name__)
+
+engine = sqlalchemy.create_engine('mysql://Utsav:2828@localhost')
+engine.execute('CREATE DATABASE IF NOT EXISTS upload')
+engine.execute('USE upload')
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://Utsav:2828@localhost/upload'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
