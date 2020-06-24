@@ -27,6 +27,7 @@ class upload_file(db.Model):
 class upload_schema(ma.SQLAlchemyAutoSchema):
 	class Meta:
 		model = upload_file
+db.create_all()
 
 @app.route('/')
 def index():
