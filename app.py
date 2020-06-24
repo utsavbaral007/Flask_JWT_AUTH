@@ -19,7 +19,6 @@ class upload_file(db.Model):
 	id = db.Column(db.Integer, primary_key = True)
 	description = db.Column(db.String(200), unique = True)
 	file = db.Column(db.LargeBinary(length = 4294967295))
-
 	def __init__(self, description, file):
 		self.description = description
 		self.file = file
@@ -27,6 +26,7 @@ class upload_file(db.Model):
 class upload_schema(ma.SQLAlchemyAutoSchema):
 	class Meta:
 		model = upload_file
+
 db.create_all()
 
 @app.route('/')
