@@ -2,14 +2,24 @@ from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 import sqlalchemy
+import mysql.connector
 
 app = Flask(__name__)
 
-engine = sqlalchemy.create_engine('mysql://Utsav:2828@localhost')
-engine.execute('CREATE DATABASE IF NOT EXISTS upload')
-engine.execute('USE upload')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://Utsav:2828@localhost/upload'
+conn = mysql.connector.connect(host = 'localhost', user = 'utsav', password = '2828')
+db = conn.cursor()
+db.execute('SHOW DATABASES')
+db_list = db.fetchall()
+db_name = input("Enter a database name: ")
+if (db_name,) not in db_list:
+	engine = sqlalchemy.create_engine('mysql://utsav:2828@localhost')
+	engine.execute('CREATE DATABASE IF NOT EXISTS ' + db_name)
+	engine.execute('USE ' + db_name)
+else:
+	print('Database already exists')
+	
+app.config['SQLALCHEMY_DATABASE_URI'] = ('mysql://utsav:2828@localhost/' + db_name)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
