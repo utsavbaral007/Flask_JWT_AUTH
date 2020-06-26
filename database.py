@@ -1,9 +1,7 @@
 import mysql.connector
-import sqlalchemy
 import sys
 
 class connect_db():
-	engine = sqlalchemy.create_engine('mysql://utsav:2828@localhost')
 	conn = mysql.connector.connect(host = 'localhost', user = 'utsav', password = '2828')
 	db = conn.cursor()
 	db.execute('show databases')
@@ -17,8 +15,8 @@ class connect_db():
 			print('database deleted successfully')
 			ask_new_db = input('Create a new database? (y/n): ')
 			if ask_new_db == 'y':
-				new_db = input('Enter a new database name: ')
-				db.execute('create database ' +new_db)
+				db_name = input('Enter a new database name: ')
+				db.execute('create database ' +db_name)
 				print('New database created')
 			else:
 				sys.exit()
@@ -26,8 +24,8 @@ class connect_db():
 			print('continue using the existing database')
 	else:
 		print('database does not exist')
-		create_new_db = input("Enter a new database name: ")
-		db.execute('create database ' +create_new_db)
+		db_name = input("Enter a new database name: ")
+		db.execute('create database ' +db_name)
 		print('New database created')
 
 

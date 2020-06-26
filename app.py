@@ -5,16 +5,10 @@ from database import connect_db
 
 app = Flask(__name__)
 
-if (connect_db.db_name,) in connect_db.db_list:
-	app.config['SQLALCHEMY_DATABASE_URI'] = ('mysql://utsav:2828@localhost/'+connect_db.db_name)
-	app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-elif (connect_db.new_db,) in connect_db.db_list:
-	app.config['SQLALCHEMY_DATABASE_URI'] = ('mysql://utsav:2828@localhost/'+connect_db.new_db)
-	app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-else:
-	app.config['SQLALCHEMY_DATABASE_URI'] = ('mysql://utsav:2828@localhost/'+connect_db.create_new_db)
-	app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+connect_db()
 
+app.config['SQLALCHEMY_DATABASE_URI'] = ('mysql://utsav:2828@localhost/'+connect_db.db_name)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
