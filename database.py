@@ -6,27 +6,22 @@ class connect_db():
 	db = conn.cursor()
 	db.execute('show databases')
 	db_list = db.fetchall()
-	db_name = input('Enter a database name: ')
+	db_name = 'learngaroo_flask_api'
 	if (db_name,) in db_list:
-		print('database already exists')
-		delete = input("Do you want to delete the existing database? (y/n): ")
-		if delete == 'y':
-			db.execute('drop database ' +db_name)
-			print('database deleted successfully')
-			ask_new_db = input('Create a new database? (y/n): ')
-			if ask_new_db == 'y':
-				db_name = input('Enter a new database name: ')
-				db.execute('create database ' +db_name)
-				print('New database created')
-			else:
-				sys.exit()
-		elif delete == 'n':
-			print('continue using the existing database')
-	else:
-		print('database does not exist')
-		db_name = input("Enter a new database name: ")
-		db.execute('create database ' +db_name)
-		print('New database created')
+		overwrite = input('Do you want to overwrite the database? (y/n): ')
+		if overwrite == 'y':
+			db.execute('DROP DATABASE '+db_name)
+			db.execute('CREATE DATABASE '+db_name)
+			print('Database has been successfully overwritten!')
+			sys.exit()
+		elif overwrite == 'n':
+			db.execute('USE '+db_name)
+			print('Continue working on existing database '+db_name)
+			sys.exit()
+		else:
+			print('Please enter y or n')
+			sys.exit()
+
 
 
 
